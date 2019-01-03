@@ -1,16 +1,19 @@
 package social;
 
 import java.io.*;
+import java.util.ArrayList;
+
+import it.unibs.fp.mylib.ServizioFile;
 
 //classe per salvare i dati degli utenti
 
 public class Serializator
 {
 	private final static String filename="database.bin";
-	private static File salvataggio = new File(filename);  //controllare per problema che o nella registrazione o nel login da errore, per esistenza o no file
+	private static File salvataggio=new File(filename);  //controllare per problema che o nella registrazione o nel login da errore, per esistenza o no file
 
 /** Classe di utilità per la serializzazione e deserializzazione 
- * @author lore_
+ * 
  *
  */
 
@@ -32,7 +35,6 @@ public class Serializator
 		}
 		else
 		{
-			salvataggio = new File(filename);
 			OutputStream stream = new FileOutputStream(filename);
 			ObjectOutputStream objStream = new ObjectOutputStream(stream);
 			

@@ -4,7 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
+import javax.swing.JTextField;
 
 /*
  * Classe per visualizzare una evento
@@ -29,7 +29,7 @@ public class PaginaEventoGraphic {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -40,7 +40,7 @@ public class PaginaEventoGraphic {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the application.
@@ -162,5 +162,7 @@ public class PaginaEventoGraphic {
 		JLabel lblNote_1 = new JLabel("note");
 		lblNote_1.setBounds(293, 676, 123, 16);
 		frame.getContentPane().add(lblNote_1);
+		//rende visibile la finestra
+		//frame.setVisible(true);
 	}
 }

@@ -50,18 +50,18 @@ public class EventGraphic {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					EventGraphic window = new EventGraphic();
+					eventGraphic window = new eventGraphic();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the application.
@@ -251,38 +251,33 @@ public class EventGraphic {
 		lblCategorie.setBounds(257, 26, 116, 31);
 		frame.getContentPane().add(lblCategorie);
 		
-		lblNomeCategoria = new JLabel("NOME CATEGORIA");
+		/*lblNomeCategoria = new JLabel("NOME CATEGORIA");
 		lblNomeCategoria.setBounds(432, 33, 116, 16);
-		frame.getContentPane().add(lblNomeCategoria);
+		frame.getContentPane().add(lblNomeCategoria);*/
 		
 		btnNewButton = new JButton("Crea");
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				creaEvent();
-				setParametriAgg();
+				
+				
 			}
 		});
 		btnNewButton.setBounds(780, 569, 137, 47);
 		frame.getContentPane().add(btnNewButton);
+		
 	}
 	public void creaEvent()
 	{
-				Categoria categoria= new Categoria(lblNomeCategoria.getText(),txtTitoloEvento.getText(),(Integer.parseInt(txtIn.getText())),Integer.parseInt(txtAnno.getText()),Integer.parseInt(txtMese.getText()),
+				Categoria categoria= new Categoria(txtTitoloEvento.getText(),(Integer.parseInt(txtIn.getText())),Integer.parseInt(txtAnno.getText()),Integer.parseInt(txtMese.getText()),
 				Integer.parseInt(txtGiorno.getText()),txtInserisciLuogo.getText(),Integer.parseInt(textField_1.getText()),Integer.parseInt(textField.getText()),
 				Integer.parseInt(txtGiorno_1.getText()),Integer.parseInt(txtOra.getText()),Integer.parseInt(txtMinuti.getText()),Integer.parseInt(textField_2.getText()),
 				Float.parseFloat(txtDenaro.getText()),txtInserisciRobaInclusa.getText(),Integer.parseInt(textField_5.getText()),Integer.parseInt(textField_4.getText()),
 				Integer.parseInt(textField_3.getText()),Integer.parseInt(textField_6.getText()),Integer.parseInt(textField_7.getText()),txtInserisciNote.getText());
-				MainClass.getDati().getEventi().add(categoria);
-				try {
-					Serializator.saveData(MainClass.getDati());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				System.out.println("fumo");
 				
 	}
-	protected void setParametriAgg() 
-	{
-		//da overridare al fine di settare i parametri aggiuntivi richiesti dalle altre categorie
-	}
+	
+
 }

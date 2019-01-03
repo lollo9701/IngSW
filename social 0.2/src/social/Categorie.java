@@ -23,7 +23,7 @@ public class Categorie {
 	public void addCategorie(Categoria _categoria,String _nomeCat)
 	{
 		elencoCategorie.add(_categoria);
-		elencoCategorie.get(i).setNome_cat(_nomeCat);
+	//	elencoCategorie.get(i).setNome_cat(_nomeCat);
 		i++;
 	
 	}
@@ -37,7 +37,7 @@ public class Categorie {
 		while(x>0)
 		{
 			x--;	
-			System.out.println(elencoCategorie.get(x).getNome_cat());	
+	//		System.out.println(elencoCategorie.get(x).getNome_cat());	
 		}
 	}
 

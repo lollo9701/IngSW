@@ -1,13 +1,13 @@
 package social;
 
+import java.io.Serializable;
+
 /*
  * Categoria, superclasse di ogni diverso tipo di evento creato nel programma.
  * Contiene i poarametri base di ogni categoria.
  */
-
-public class Categoria 
+public class Categoria implements Serializable
 {
-	protected String nome_cat ;
 	protected String titolo ;
 	protected int numero_partecipanti ;
 	protected int anno_t, mese_t, giorno_t;
@@ -24,15 +24,9 @@ public class Categoria
 	protected final String CONST="Nome categoria: %s \nTitolo: %s \nNumero partecipanti: %d \nTermine iscrizione: %d-%d-%d \nLuogo: %s\n"
 			+ "Data inizio: %d-%d-%d\nOra inizio: %d:%d\nDurata: %d\nQuota:%f\nCompreso nella quota: %s\nData fine evento: %d-%d-%d\n"
 			+ "Ora conclusione evento: %d:%d\nNote: %s";
-	
-	public Categoria()
-	{
-		  
-	}
-	public Categoria(String nome, String tit, int num_par, int anno, int mese, int giorno, String _luogo, int annoi, int mesei, int giornoi, int ore, int min,
+	public Categoria(String tit, int num_par, int anno, int mese, int giorno, String _luogo, int annoi, int mesei, int giornoi, int ore, int min,
 			int _durata, float _quota, String _extra, int annof, int mesef, int giornof, int orafin, int minfin, String _note)
 	{
-		nome_cat=nome;
 		titolo=tit;
 		numero_partecipanti=num_par;
 		anno_t=anno;
@@ -56,22 +50,22 @@ public class Categoria
 		
 	}
 	
-	//controllare se ci serve perchè non l'abbiamo più usato
+	// costruttore
+	public Categoria()
+	{
+		  
+	}
+	
+	//metodo toString
 	public String toString() 
 	{
-		return String.format(CONST,nome_cat,titolo,numero_partecipanti,anno_t,mese_t,giorno_t,luogo,anno_i, mese_i, 
+		return String.format(CONST,titolo,numero_partecipanti,anno_t,mese_t,giorno_t,luogo,anno_i, mese_i, 
 				giorno_i,ora, minuti,durata,quota,extra,anno_f,mese_f,giorno_f,ora_conclusione, minuti_conclusione,note );
-		
 	}
 
-	public String getNome_cat() {
-		return nome_cat;
-	}
+	//getter e setter
 
-	public void setNome_cat(String nome_cat) {
-		this.nome_cat = nome_cat;
-	}
-
+	//titolo
 	public String getTitolo() {
 		return titolo;
 	}
@@ -80,6 +74,7 @@ public class Categoria
 		this.titolo = titolo;
 	}
 
+	//numero partecipanti
 	public int getNumero_partecipanti() {
 		return numero_partecipanti;
 	}
@@ -88,6 +83,7 @@ public class Categoria
 		this.numero_partecipanti = numero_partecipanti;
 	}
 
+	//anno, mese e giorno termine iscrizione
 	public int getAnno_t() {
 		return anno_t;
 	}
@@ -112,6 +108,7 @@ public class Categoria
 		this.giorno_t = giorno_t;
 	}
 
+	//luogo
 	public String getLuogo() {
 		return luogo;
 	}
@@ -120,6 +117,7 @@ public class Categoria
 		this.luogo = luogo;
 	}
 
+	//anno mese e giorno inizio evento
 	public int getAnno_i() {
 		return anno_i;
 	}
@@ -144,6 +142,7 @@ public class Categoria
 		this.giorno_i = giorno_i;
 	}
 
+	//ora e minuti inizio evento
 	public int getOra() {
 		return ora;
 	}
@@ -160,6 +159,7 @@ public class Categoria
 		this.minuti = minuti;
 	}
 
+	//durata evento
 	public int getDurata() {
 		return durata;
 	}
@@ -168,6 +168,7 @@ public class Categoria
 		this.durata = durata;
 	}
 
+	//quota
 	public float getQuota() {
 		return quota;
 	}
@@ -176,6 +177,7 @@ public class Categoria
 		this.quota = quota;
 	}
 
+	//compreso nella quota
 	public String getExtra() {
 		return extra;
 	}
@@ -184,6 +186,7 @@ public class Categoria
 		this.extra = extra;
 	}
 
+	//anno, mese e giorno fine evento
 	public int getAnno_f() {
 		return anno_f;
 	}
@@ -212,6 +215,8 @@ public class Categoria
 		return ora_conclusione;
 	}
 
+	
+	//ora e minuti fine evento
 	public void setOra_conclusione(int ora_conclusione) {
 		this.ora_conclusione = ora_conclusione;
 	}
@@ -223,7 +228,8 @@ public class Categoria
 	public void setMinuti_conclusione(int minuti_conclusione) {
 		this.minuti_conclusione = minuti_conclusione;
 	}
-
+	
+	//note
 	public String getNote() {
 		return note;
 	}

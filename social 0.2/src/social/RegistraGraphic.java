@@ -7,6 +7,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.IOException;
 import java.util.GregorianCalendar;
 
@@ -25,7 +26,6 @@ public class RegistraGraphic {
 	private JTextField textFieldLoginNome;
 	private JTextField textNote;
 	private PaginaPersonaleGraphic paginaPersonale ;
-	private DatiUtili dati = null;
 	private JTextField textMese;
 	private JTextField textGiorno;
 	private JButton btnMaschio;
@@ -40,7 +40,7 @@ public class RegistraGraphic {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 	
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -52,13 +52,12 @@ public class RegistraGraphic {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the application.
 	 */
 	public RegistraGraphic() {
-		dati=MainClass.getDati();
 		initialize();
 		
 	}
@@ -144,14 +143,14 @@ public class RegistraGraphic {
 								} 
 							
 							nuovoUtente.creaUtente(txtNomeReg.getText(),psw,textAnno.getText(), textMese.getText(), textGiorno.getText(),genere );
-							dati.getListaUtenti().add(nuovoUtente);
+							MainClass.getDati().getListaUtenti().add(nuovoUtente);
 						}
 						else
 							textNoteReg.setText("Inserisci una data numerica");
 				
 						
 							try {
-								Serializator.saveData(dati);
+								Serializator.saveData(MainClass.getDati());
 							} catch (IOException e) {
 								e.printStackTrace();
 							}
@@ -171,7 +170,7 @@ public class RegistraGraphic {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
-				for(int i=0 ; i<dati.getListaUtenti().size() ; i++)
+				for(int i=0 ; i<MainClass.getDati().getListaUtenti().size() ; i++)
 				{
 						char pwd [] = passwordFieldLog.getPassword();
 						String psw="";
@@ -179,12 +178,12 @@ public class RegistraGraphic {
 					{
 						psw = psw + Character.toString(pwd[x]);
 					} 
-					if((dati.getListaUtenti().get(i).getUsername().equals(textFieldLoginNome.getText())) && 
-						(dati.getListaUtenti().get(i).getPassword().equals(psw)))
+					if((MainClass.getDati().getListaUtenti().get(i).getUsername().equals(textFieldLoginNome.getText())) && 
+						(MainClass.getDati().getListaUtenti().get(i).getPassword().equals(psw)))
 					{
 						
 						paginaPersonale = new PaginaPersonaleGraphic();
-						paginaPersonale.inizializzaDati(dati.getListaUtenti().get(i));
+						paginaPersonale.inizializzaDati(MainClass.getDati().getListaUtenti().get(i));
 				
 						frame.setVisible(false);
 				
@@ -243,7 +242,8 @@ public class RegistraGraphic {
 		passwordFieldLog = new JPasswordField();
 		passwordFieldLog.setBounds(219, 451, 146, 26);
 		frame.getContentPane().add(passwordFieldLog);
-		
+		//rende visibile finestra
+		frame.setVisible(true);
 		//finisce qua
 		
 		
@@ -312,11 +312,11 @@ public class RegistraGraphic {
 	{                                                         
 		boolean check=true;
 		
-		for(int i=0; i<=(dati.getListaUtenti().size()-1) ; i++)
+		for(int i=0; i<=(MainClass.getDati().getListaUtenti().size()-1) ; i++)
 		{
 			
 			
-			if(_nome.equals(dati.getListaUtenti().get(i).getUsername()))
+			if(_nome.equals(MainClass.getDati().getListaUtenti().get(i).getUsername()))
 			{
 				check=false;
 				

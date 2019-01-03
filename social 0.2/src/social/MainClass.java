@@ -1,35 +1,34 @@
 package social;
 
 import java.io.IOException;
+import java.io.Serializable;
 
-public class MainClass 
+public class MainClass implements Serializable
+
 {
 	private static DatiUtili dati = new DatiUtili();
-	
 	
 	public static void main(String[] args) 
 	{
 		caricamento();
-		RegistraGraphic reg= new RegistraGraphic();
-		reg.main(args);
+		BachecaEventi bac = new BachecaEventi();
+		//EventCalcioGraphic calcio= new EventCalcioGraphic();
+		//RegistraGraphic reg= new RegistraGraphic();
 	}
-	
 	public static void caricamento()
 	{
-			if(Serializator.getSalvataggio().exists()) 
+				if(Serializator.getSalvataggio().exists()) 
 			{
-				try
-				{
+				try {
 					dati = Serializator.readSavedData(Serializator.getFilename());
-				}catch (ClassNotFoundException | IOException e) 
-				{
+				} catch (ClassNotFoundException | IOException e) {
 					e.printStackTrace();
 				}
 				
 			}
 			else 
 			{
-				dati = new DatiUtili();
+				System.out.println("creazione nuovo salvataggio");
 			}
 			
 	}

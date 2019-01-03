@@ -26,7 +26,7 @@ public class DatiUtili implements Serializable
 	}
 	
 	//lista Eventi
-	public ArrayList<Categoria> getEventi() {
+	public ArrayList<Categoria> getListaEventi() {
 		return listaEventi;
 	}
 	public void setEventi(ArrayList<Categoria> eventi) {
