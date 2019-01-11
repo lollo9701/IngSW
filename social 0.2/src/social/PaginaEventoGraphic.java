@@ -1,168 +1,269 @@
 package social;
 
-import java.awt.EventQueue;
+import java.awt.Color;
 
+//ricordarsi di creare una classe per la grafica della baheca dell'evento specifico
+
+import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.ListIterator;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
+import javax.swing.text.html.HTMLDocument.Iterator;
+import javax.swing.JPanel;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
-
-/*
- * Classe per visualizzare una evento
- */
 
 public class PaginaEventoGraphic {
 
-	protected JFrame frame;
-	protected JLabel lblLuogo;
-	protected JLabel lblDataInizioEvento;
-	protected JLabel lblOrarioInizioEvento;
-	protected JLabel lblDurata;
-	protected JLabel lblQuota;
-	protected JLabel lblInclusiNellaQuota;
-	protected JLabel lblDataFineEvento;
-	protected JLabel lblOrarioFineEvento;
-	protected JLabel lblNote;
-	protected JLabel lblCategorie;
-	protected JLabel lblNomeCategoria;
-//	public static Categoria categoria = new Categoria();
-
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PaginaEventoGraphic window = new PaginaEventoGraphic();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
-
+	
+ 	protected JFrame frame;
+ 	private ArrayList <JPanel> pannelli= new ArrayList();
+// 	private ArrayList <Utente> copiaEventi =new ArrayList<>();           //array utili a rimozione iscrizioni
+// 	private ArrayList <Categoria> copiaEventiPersonali =new ArrayList<>();
+    private DatiUtili dati= null;
+    private JPanel	pannello;
+    private JLabel lblLuogo;
+    private JLabel lblDataInizioEvento;
+    private JLabel lblOrarioInizioEvento;
+    private JLabel lblDurata;
+    private JLabel lblQuota;
+    private JLabel lblInclusiNellaQuota;
+    private JLabel lblDataFineEvento;
+    private JLabel lblOrarioFineEvento;
+    private JLabel lblNote;
+	private JLabel lblCategorie;
+    private JLabel lblNomeCategoria;
+    private JButton revoca;
+    private JLabel lblTitolo;
+    private JLabel lblPartecipanti;
+    private JLabel lblDataTermine;
+    private JLabel lblLuogo_1;
+	private JLabel lblDataInizio; 
+	private JLabel lblOraraioInizio; 
+	private JLabel lblDurata_1 ;
+	private	JLabel lblQuota_1 ;
+	private JLabel lblExtra;
+	private JLabel lblDataFine; 
+	private JLabel lblOrarioFine; 
+	private JLabel lblNote_1 ;
+	private JLabel lblTitoloEvento ;
+	private JLabel lblNumeroPartecipanti;
+	private JLabel lblDataTermineIscrizione;
+	private JButton indietro;
+	private JTabbedPane tabs; 
+	 
+	 
 	/**
 	 * Create the application.
 	 */
 	public PaginaEventoGraphic() {
+		dati=MainClass.getDati();
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	protected void initialize() {
+	
+	public void initialize() {
+			
 		frame = new JFrame();
-		frame.setBounds(100, 100, 1014, 768);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frame.setBounds(0, 0, 1100, 850);
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    
+	    tabs = new JTabbedPane();    
+	    tabs.setBounds(0,0, 1050, 750);
+	    tabs.setTabPlacement(JTabbedPane.LEFT); 
+	    tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+		   
+		        
+	// Aggiunta dei pannelli al JTabbedPane (ogni pannello contiene dati relativi a eventi specifici + bottone iscrizione     
+	    for(int i=0; i<MainClass.getUtenteConnesso().getEventiPersonali().size() ;i++)
+		{
+			
+		    pannelli.add(inizializzaEvento(MainClass.getUtenteConnesso().getEventiPersonali().get(i)));
+		    pannelli.get(i).setPreferredSize(new Dimension(1000,600));
+		    tabs.addTab(MainClass.getUtenteConnesso().getEventiPersonali().get(i).getTitolo(),pannelli.get(i));
+		    	
+        }
+  
+		        
+        frame.getContentPane().setLayout(null);
+        frame.getContentPane().add(tabs);
+        frame.setLocation(300, 100);
+        frame.setVisible(true); 
+        
+	}
+	
+	//metodo per permettere l'inizializzazione dei pannelli della TabbedPane con dati di eventi a cui utente è iscritto
+	protected JPanel inizializzaEvento(Categoria evento)
+	{
+		
+		pannello = new JPanel();
+		pannello.setLayout(null);
+		
+	//BOTTONE PER PERMETTERE LA CREAZIONE DI UN EVENTO , in realtà così puoi solo di calcio,dovrebbe essere generico
+		revoca=new JButton("REVOCA ISCRIZIONE");
+		revoca.setBounds(760, 670, 150, 50);
+		revoca.setBackground(Color.RED); 
+		pannello.add(revoca);
+				
+		revoca.addMouseListener(new MouseAdapter() 
+		{
+		@Override
+		public void mouseClicked(MouseEvent arg0)
+		{
+				
+			int k= tabs.getSelectedIndex();
+			System.out.println(k);
+		//metodo per revocare iscrizione da evento , controllare perchè da errore 
+				
+			evento.revocaIscrizione(k);
+			MainClass.getUtenteConnesso().revocaIscrizione(dati.getListaEventi().get(k));
+			    
+			try {
+				Serializator.saveData(MainClass.getDati());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}	
+		}	
+		});
 		
 		
-		JLabel lblTitoloEvento = new JLabel("TITOLO EVENTO:");
+						
+		lblTitoloEvento = new JLabel("TITOLO EVENTO:");
 		lblTitoloEvento.setBounds(63, 121, 123, 16);
-		frame.getContentPane().add(lblTitoloEvento);
+		pannello.add(lblTitoloEvento);
 		
-		JLabel lblNumeroPartecipanti = new JLabel("NUMERO PARTECIPANTI");
+		lblNumeroPartecipanti = new JLabel("NUMERO PARTECIPANTI:");
 		lblNumeroPartecipanti.setBounds(63, 173, 145, 16);
-		frame.getContentPane().add(lblNumeroPartecipanti);
+		pannello.add(lblNumeroPartecipanti);
 		
-		JLabel lblDataTermineIscrizione = new JLabel("DATA TERMINE ISCRIZIONE");
+		lblDataTermineIscrizione = new JLabel("DATA TERMINE ISCRIZIONE:");
 		lblDataTermineIscrizione.setBounds(63, 220, 171, 16);
-		frame.getContentPane().add(lblDataTermineIscrizione);
+		pannello.add(lblDataTermineIscrizione);
 		
-		lblLuogo = new JLabel("LUOGO");
+		lblLuogo = new JLabel("LUOGO:");
 		lblLuogo.setBounds(63, 271, 56, 16);
-		frame.getContentPane().add(lblLuogo);
+		pannello.add(lblLuogo);
 		
-		lblDataInizioEvento = new JLabel("DATA INIZIO EVENTO");
+		lblDataInizioEvento = new JLabel("DATA INIZIO EVENTO:");
 		lblDataInizioEvento.setBounds(63, 320, 145, 16);
-		frame.getContentPane().add(lblDataInizioEvento);
+		pannello.add(lblDataInizioEvento);
 		
-		lblOrarioInizioEvento = new JLabel("ORARIO INIZIO EVENTO");
+		lblOrarioInizioEvento = new JLabel("ORARIO INIZIO EVENTO:");
 		lblOrarioInizioEvento.setBounds(63, 374, 145, 16);
-		frame.getContentPane().add(lblOrarioInizioEvento);
+		pannello.add(lblOrarioInizioEvento);
 		
-		lblDurata = new JLabel("DURATA");
+		lblDurata = new JLabel("DURATA:");
 		lblDurata.setBounds(63, 439, 145, 16);
-		frame.getContentPane().add(lblDurata);
+		pannello.add(lblDurata);
 		
-		lblQuota = new JLabel("QUOTA");
+		lblQuota = new JLabel("QUOTA:");
 		lblQuota.setBounds(63, 497, 145, 16);
-		frame.getContentPane().add(lblQuota);
+		pannello.add(lblQuota);
 		
-		lblInclusiNellaQuota = new JLabel("INCLUSI NELLA QUOTA");
+		lblInclusiNellaQuota = new JLabel("INCLUSI NELLA QUOTA:");
 		lblInclusiNellaQuota.setBounds(63, 547, 145, 16);
-		frame.getContentPane().add(lblInclusiNellaQuota);
+		pannello.add(lblInclusiNellaQuota);
 		
-		lblDataFineEvento = new JLabel("DATA FINE EVENTO");
+		lblDataFineEvento = new JLabel("DATA FINE EVENTO:");
 		lblDataFineEvento.setBounds(63, 595, 145, 16);
-		frame.getContentPane().add(lblDataFineEvento);
+		pannello.add(lblDataFineEvento);
 		
-		lblOrarioFineEvento = new JLabel("ORARIO FINE EVENTO");
+		lblOrarioFineEvento = new JLabel("ORARIO FINE EVENTO:");
 		lblOrarioFineEvento.setBounds(63, 637, 145, 16);
-		frame.getContentPane().add(lblOrarioFineEvento);
+		pannello.add(lblOrarioFineEvento);
 		
-		lblNote = new JLabel("NOTE");
+		lblNote = new JLabel("NOTE:");
 		lblNote.setBounds(63, 676, 145, 16);
-		frame.getContentPane().add(lblNote);
+		pannello.add(lblNote);
 		
-		lblCategorie = new JLabel("CATEGORIA");
+		lblCategorie = new JLabel("CATEGORIA:");
 		lblCategorie.setBounds(257, 26, 116, 31);
-		frame.getContentPane().add(lblCategorie);
+		pannello.add(lblCategorie);
 		
-		lblNomeCategoria = new JLabel("NOME CATEGORIA");
-		lblNomeCategoria.setBounds(432, 33, 116, 16);
-		frame.getContentPane().add(lblNomeCategoria);
+	//	lblNomeCategoria = new JLabel("GENERICA");
+	//	lblNomeCategoria.setBounds(432, 33, 116, 16);
+	//	pannello.add(lblNomeCategoria);
 		
-		JLabel lblTitolo = new JLabel("titolo");
-		lblTitolo.setBounds(317, 121, 56, 16);
-		frame.getContentPane().add(lblTitolo);
+		lblTitolo = new JLabel(evento.getTitolo());
+		lblTitolo.setBounds(300, 121, 56, 16);
+		pannello.add(lblTitolo);
 		
-		JLabel lblPartecipanti = new JLabel("partecipanti");
-		lblPartecipanti.setBounds(310, 173, 106, 16);
-		frame.getContentPane().add(lblPartecipanti);
+		lblPartecipanti = new JLabel(String.valueOf(evento.getNumero_partecipanti()));
+		lblPartecipanti.setBounds(300, 173, 106, 16);
+		pannello.add(lblPartecipanti);
 		
-		JLabel lblDataTermine = new JLabel("data termine");
-		lblDataTermine.setBounds(317, 220, 123, 16);
-		frame.getContentPane().add(lblDataTermine);
+		lblDataTermine = new JLabel(String.valueOf(evento.getGiorno_t()) + "/" + String.valueOf(evento.getMese_t()) 
+		+ "/" + String.valueOf(evento.getAnno_t()));
+		lblDataTermine.setBounds(300, 220, 123, 16);
+		pannello.add(lblDataTermine);
 		
-		JLabel lblLuogo_1 = new JLabel("luogo");
-		lblLuogo_1.setBounds(317, 271, 123, 16);
-		frame.getContentPane().add(lblLuogo_1);
+		lblLuogo_1 = new JLabel(evento.getLuogo());
+		lblLuogo_1.setBounds(300, 271, 123, 16);
+		pannello.add(lblLuogo_1);
 		
-		JLabel lblDataInizio = new JLabel("data inizio");
-		lblDataInizio.setBounds(317, 320, 123, 16);
-		frame.getContentPane().add(lblDataInizio);
+		lblDataInizio = new JLabel(String.valueOf(evento.getGiorno_i()) + "/" + String.valueOf(evento.getMese_i())
+		+ "/" +String.valueOf(evento.getAnno_i()));
+		lblDataInizio.setBounds(300, 320, 123, 16);
+		pannello.add(lblDataInizio);
 		
-		JLabel lblOraraioInizio = new JLabel("oraraio inizio");
-		lblOraraioInizio.setBounds(327, 374, 123, 16);
-		frame.getContentPane().add(lblOraraioInizio);
+		lblOraraioInizio = new JLabel(String.valueOf(evento.getOra()));
+		lblOraraioInizio.setBounds(300, 374, 123, 16);
+		pannello.add(lblOraraioInizio);
 		
-		JLabel lblDurata_1 = new JLabel("durata");
-		lblDurata_1.setBounds(317, 439, 123, 16);
-		frame.getContentPane().add(lblDurata_1);
+		lblDurata_1 = new JLabel(String.valueOf(evento.getDurata()));
+		lblDurata_1.setBounds(300, 439, 123, 16);
+		pannello.add(lblDurata_1);
 		
-		JLabel lblQuota_1 = new JLabel("quota");
-		lblQuota_1.setBounds(317, 497, 123, 16);
-		frame.getContentPane().add(lblQuota_1);
+		lblQuota_1 = new JLabel(String.valueOf(evento.getQuota())+"€");
+		lblQuota_1.setBounds(300, 497, 123, 16);
+		pannello.add(lblQuota_1);
 		
-		JLabel lblExtra = new JLabel("extra");
-		lblExtra.setBounds(317, 547, 123, 16);
-		frame.getContentPane().add(lblExtra);
+		lblExtra = new JLabel(evento.getExtra());
+		lblExtra.setBounds(300, 547, 123, 16);
+		pannello.add(lblExtra);
 		
-		JLabel lblDataFine = new JLabel("data fine");
-		lblDataFine.setBounds(293, 595, 123, 16);
-		frame.getContentPane().add(lblDataFine);
+		lblDataFine = new JLabel(String.valueOf(evento.getGiorno_f()) + "/" + String.valueOf(evento.getMese_f())
+		+ "/" +String.valueOf(evento.getAnno_f()));
+		lblDataFine.setBounds(300, 595, 123, 16);
+		pannello.add(lblDataFine);
 		
-		JLabel lblOrarioFine = new JLabel("orario fine");
-		lblOrarioFine.setBounds(293, 637, 123, 16);
-		frame.getContentPane().add(lblOrarioFine);
+		lblOrarioFine = new JLabel(String.valueOf(evento.getOra_conclusione()));
+		lblOrarioFine.setBounds(300, 637, 123, 16);
+		pannello.add(lblOrarioFine);
 		
-		JLabel lblNote_1 = new JLabel("note");
-		lblNote_1.setBounds(293, 676, 123, 16);
-		frame.getContentPane().add(lblNote_1);
+		lblNote_1 = new JLabel(evento.getNote());
+		lblNote_1.setBounds(300, 676, 123, 16);
+		pannello.add(lblNote_1);
+		
+
+		//BOTTONE PER TORNARE ALLA PAGINA PERSONALE
+		indietro = new JButton("BackToPersonalPage");
+		indietro.setBounds(500, 600, 180, 50);
+		indietro.setBackground(Color.GREEN); 
+		pannello.add(indietro);
+				
+		indietro.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				PaginaPersonaleGraphic pag= new PaginaPersonaleGraphic();
+				pag.inizializzaDati(MainClass.getUtenteConnesso());
+				frame.setVisible(false);
+			}
+		});
+		
 		//rende visibile la finestra
 		//frame.setVisible(true);
+		return pannello;
 	}
+	
 }

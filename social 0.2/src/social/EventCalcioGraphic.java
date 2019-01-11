@@ -74,13 +74,13 @@ public class EventCalcioGraphic extends EventGraphic{
 		frame.getContentPane().add(lblFascia);
 		
 		txtInserisciEtaMinima = new JTextField();
-		txtInserisciEtaMinima.setText("ETA' MIN");
+		txtInserisciEtaMinima.setText("5");   //per evitare di risciriverlo sempre
 		txtInserisciEtaMinima.setBounds(750, 170, 70, 22);
 		frame.getContentPane().add(txtInserisciEtaMinima);
 		txtInserisciEtaMinima.setColumns(10);
 		
 		txtInserisciEtaMax = new JTextField();
-		txtInserisciEtaMax.setText("ETA' MAX");
+		txtInserisciEtaMax.setText("8");
 		txtInserisciEtaMax.setBounds(850, 170, 70, 22);
 		frame.getContentPane().add(txtInserisciEtaMax);
 		txtInserisciEtaMax.setColumns(10);
@@ -90,20 +90,25 @@ public class EventCalcioGraphic extends EventGraphic{
 	}
 	public void creaEvent()
 	{
-		Calcio calcio = new Calcio(txtTitoloEvento.getText(),(Integer.parseInt(txtIn.getText())),Integer.parseInt(txtAnno.getText()),Integer.parseInt(txtMese.getText()),
-				Integer.parseInt(txtGiorno.getText()),txtInserisciLuogo.getText(),Integer.parseInt(textField_1.getText()),Integer.parseInt(textField.getText()),
-				Integer.parseInt(txtGiorno_1.getText()),Integer.parseInt(txtOra.getText()),Integer.parseInt(txtMinuti.getText()),Integer.parseInt(textField_2.getText()),
-				Float.parseFloat(txtDenaro.getText()),txtInserisciRobaInclusa.getText(),Integer.parseInt(textField_5.getText()),Integer.parseInt(textField_4.getText()),
-				Integer.parseInt(textField_3.getText()),Integer.parseInt(textField_6.getText()),Integer.parseInt(textField_7.getText()),txtInserisciNote.getText(),
-				txtInserisciSessoPartecipanti.getText(),Integer.parseInt(txtInserisciEtaMax.getText()),Integer.parseInt(txtInserisciEtaMinima.getText()));
+		Calcio calcio = new Calcio(txtTitoloEvento.getText(),(Integer.parseInt(txtIn.getText())),Integer.parseInt(txtAnno.getText()),
+				Integer.parseInt(txtMese.getText()),Integer.parseInt(txtGiorno.getText()),txtInserisciLuogo.getText(),Integer.parseInt(textField_1.getText()),
+				Integer.parseInt(textField.getText()),Integer.parseInt(txtGiorno_1.getText()),Integer.parseInt(txtOra.getText()),Integer.parseInt(txtMinuti.getText()),
+				Integer.parseInt(textField_2.getText()),Float.parseFloat(txtDenaro.getText()),txtInserisciRobaInclusa.getText(),Integer.parseInt(textField_5.getText()),
+				Integer.parseInt(textField_4.getText()),Integer.parseInt(textField_3.getText()),Integer.parseInt(textField_6.getText()),Integer.parseInt(textField_7.getText()),
+				txtInserisciNote.getText(),txtInserisciSessoPartecipanti.getText(),Integer.parseInt(txtInserisciEtaMax.getText()),Integer.parseInt(txtInserisciEtaMinima.getText()));
 		
-				MainClass.getDati().getListaEventi().add(calcio);
+				MainClass.getDati().getListaEventi().add(calcio); //salva nuovo evento nell'elenco
+				calcio.getUtentiIscritti().add(MainClass.getUtenteConnesso());  //chi crea evento viene in automatico iscritto
+				MainClass.getUtenteConnesso().getEventiPersonali().add(calcio);
 				try {
 					Serializator.saveData(MainClass.getDati());
 				} catch (IOException e1) {
 					e1.printStackTrace();
-				}		
+				}
 				
-		
+				PaginaPersonaleGraphic pag = new PaginaPersonaleGraphic();
+				frame.setVisible(false);
 	}
+	
+	
 }

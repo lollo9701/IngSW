@@ -1,10 +1,17 @@
 package social;
 
+import java.awt.Color;
 
+//ricordarsi di creare una classe per la grafica della baheca dell'evento specifico
 
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import javax.swing.JTabbedPane;
@@ -15,16 +22,42 @@ import javax.swing.JLabel;
 
 public class BachecaEventi {
 
-	protected JFrame frame;
 	
-	   ArrayList <JPanel> pannelli= new ArrayList();
-	   DatiUtili dati= null;
-	
-   /**
-	 * Launch the application.
-	 */
-
-
+ 	protected JFrame frame;
+ 	private  ArrayList <JPanel> pannelli= new ArrayList();
+    private DatiUtili dati= null;
+    private JPanel	pannello;
+    private JLabel lblLuogo;
+    private JLabel lblDataInizioEvento;
+    private JLabel lblOrarioInizioEvento;
+    private JLabel lblDurata;
+    private JLabel lblQuota;
+    private JLabel lblInclusiNellaQuota;
+    private JLabel lblDataFineEvento;
+    private JLabel lblOrarioFineEvento;
+    private JLabel lblNote;
+	private JLabel lblCategorie;
+    private JLabel lblNomeCategoria;
+    private JButton iscrizione;
+    private JButton indietro;
+    private JButton creaEvento;
+    private JLabel lblTitolo;
+    private JLabel lblPartecipanti;
+    private JLabel lblDataTermine;
+    private JLabel lblLuogo_1;
+	private JLabel lblDataInizio; 
+	private JLabel lblOraraioInizio; 
+	private JLabel lblDurata_1 ;
+	private	JLabel lblQuota_1 ;
+	private JLabel lblExtra;
+	private JLabel lblDataFine; 
+	private JLabel lblOrarioFine; 
+	private JLabel lblNote_1 ;
+	private JLabel lblTitoloEvento ;
+	private JLabel lblNumeroPartecipanti;
+	private JLabel lblDataTermineIscrizione;
+	 
+	 
 	/**
 	 * Create the application.
 	 */
@@ -38,32 +71,39 @@ public class BachecaEventi {
 	 */
 	
 	public void initialize() {
-			frame = new JFrame();
-		    frame.setBounds(0, 0, 1000, 850);
-		    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		    
-				 
-		        // Aggiunta dei pannelli al JTabbedPane
-		     
-		    JTabbedPane tabs = new JTabbedPane();    
-		    tabs.setBounds(0,0, 950, 750);
-		    tabs.setTabPlacement(JTabbedPane.LEFT);  
+			
+		frame = new JFrame();
+		frame.setBounds(0, 0, 1100, 850);
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    
+	    JTabbedPane tabs = new JTabbedPane();    
+	    tabs.setBounds(0,0, 1050, 750);
+	    tabs.setTabPlacement(JTabbedPane.LEFT); 
+	    tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		   
 		        
-		        
+	// Aggiunta dei pannelli al JTabbedPane (ogni pannello contiene dati relativi a eventi specifici + bottone iscrizione 
+	    if(dati.getListaEventi().size()==0)
+	    {
+	    	EventCalcioGraphic testCrea = new EventCalcioGraphic();
+	    	frame.setVisible(true);
+	    }
+	    else
+	    {	
 		for(int i=0; i<dati.getListaEventi().size(); i++)
         {
-		        	
+		      
         	pannelli.add(inizializzaEvento(dati.getListaEventi().get(i)));
-        	pannelli.get(i).setPreferredSize(new Dimension(900,600));
+        	pannelli.get(i).setPreferredSize(new Dimension(1000,600));
         	tabs.addTab(dati.getListaEventi().get(i).getTitolo(),pannelli.get(i));
         	
         	
-        	if(dati.getListaEventi().get(i).getTitolo().equals("calcetto"))
+        /*	if(dati.getListaEventi().get(i).getTitolo().equals("calcetto"))
         	{
         		aggiungiParametri(pannelli.get(i));
-        	}
+        	}  */
         }
+	    }
   
 		        
         frame.getContentPane().setLayout(null);
@@ -73,33 +113,112 @@ public class BachecaEventi {
         
 	}
 	
+//metodo per permettere l'inizializzazione dei pannelli della TabbedPane con dati di eventi specifici
+	
 	protected JPanel inizializzaEvento(Categoria evento)
 	{
-		 JPanel	pannello = new JPanel();
-		 JLabel lblLuogo;
-		 JLabel lblDataInizioEvento;
-		 JLabel lblOrarioInizioEvento;
-		 JLabel lblDurata;
-		 JLabel lblQuota;
-		 JLabel lblInclusiNellaQuota;
-		 JLabel lblDataFineEvento;
-		 JLabel lblOrarioFineEvento;
-		 JLabel lblNote;
-		 JLabel lblCategorie;
-		 JLabel lblNomeCategoria;
 		
+		pannello = new JPanel();
 		pannello.setLayout(null);
 		
+		//BOTTONE PER PERMETTERE LA CREAZIONE DI UN EVENTO , in realtà così puoi solo di calcio,dovrebbe essere generico
+		creaEvento=new JButton("CREA EVENTO");
+		creaEvento.setBounds(760, 670, 150, 50);
+		creaEvento.setBackground(Color.GREEN); 
+		pannello.add(creaEvento);
+				
+		creaEvento.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				EventCalcioGraphic event = new EventCalcioGraphic();
+				frame.setVisible(false);
+			}
+		});
 		
-		JLabel lblTitoloEvento = new JLabel("TITOLO EVENTO:");
+		
+		//BOTTONE PER TORNARE ALLA PAGINA PERSONALE
+		indietro=new JButton("BackToPersonalPage");
+		indietro.setBounds(500, 600, 180, 50);
+		indietro.setBackground(Color.GREEN); 
+		pannello.add(indietro);
+				
+		indietro.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				PaginaPersonaleGraphic pag= new PaginaPersonaleGraphic();
+				pag.inizializzaDati(MainClass.getUtenteConnesso());
+				frame.setVisible(false);
+			}
+		});
+		
+		
+		
+		//BOTTONE CHE PERMETTE DI ISCRIVERE UN UTENTE ALL'EVENTO (+controllo se già iscritto non re-iscrive)
+		iscrizione = new JButton("ISCRIVITI");
+		iscrizione.setBounds(600, 670, 150, 50);
+		iscrizione.setBackground(Color.GREEN); 
+		pannello.add(iscrizione);
+		
+		iscrizione.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {     //mettere iscrizione anche in Utente eventiPersonali
+				
+				boolean iscritto=false;
+				
+				if(evento.getUtentiIscritti().size() == 0)
+				{	
+					//dati.getListaEventi().get(numeroEvento)
+					evento.getUtentiIscritti().add(MainClass.getUtenteConnesso());
+					MainClass.getUtenteConnesso().getEventiPersonali().add(evento);
+					
+					try {
+						Serializator.saveData(MainClass.getDati());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					// System.out.println("sei il primo iscritto :)");
+				
+				}	
+				else
+				{	
+					for(int i=0 ; i<evento.getUtentiIscritti().size() ; i++)
+					{
+						if(evento.getUtentiIscritti().get(i).equals(MainClass.getUtenteConnesso()))
+						{
+							iscritto=true;
+						//	System.out.println("sei già iscritto");
+						}
+					
+					}	
+	
+						if(iscritto==false)
+						{
+							evento.getUtentiIscritti().add(MainClass.getUtenteConnesso());
+							MainClass.getUtenteConnesso().getEventiPersonali().add(evento);
+							
+							try {
+								Serializator.saveData(MainClass.getDati());
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						//	System.out.println("sei stato iscritto");
+						}
+					 
+				}	 
+			}	
+			});
+		
+		lblTitoloEvento = new JLabel("TITOLO EVENTO:");
 		lblTitoloEvento.setBounds(63, 121, 123, 16);
 		pannello.add(lblTitoloEvento);
 		
-		JLabel lblNumeroPartecipanti = new JLabel("NUMERO PARTECIPANTI:");
+		lblNumeroPartecipanti = new JLabel("NUMERO PARTECIPANTI:");
 		lblNumeroPartecipanti.setBounds(63, 173, 145, 16);
 		pannello.add(lblNumeroPartecipanti);
 		
-		JLabel lblDataTermineIscrizione = new JLabel("DATA TERMINE ISCRIZIONE:");
+		lblDataTermineIscrizione = new JLabel("DATA TERMINE ISCRIZIONE:");
 		lblDataTermineIscrizione.setBounds(63, 220, 171, 16);
 		pannello.add(lblDataTermineIscrizione);
 		
@@ -147,54 +266,54 @@ public class BachecaEventi {
 	//	lblNomeCategoria.setBounds(432, 33, 116, 16);
 	//	pannello.add(lblNomeCategoria);
 		
-		JLabel lblTitolo = new JLabel(evento.getTitolo());
+		lblTitolo = new JLabel(evento.getTitolo());
 		lblTitolo.setBounds(300, 121, 56, 16);
 		pannello.add(lblTitolo);
 		
-		JLabel lblPartecipanti = new JLabel(String.valueOf(evento.getNumero_partecipanti()));
+		lblPartecipanti = new JLabel(String.valueOf(evento.getNumero_partecipanti()));
 		lblPartecipanti.setBounds(300, 173, 106, 16);
 		pannello.add(lblPartecipanti);
 		
-		JLabel lblDataTermine = new JLabel(String.valueOf(evento.getGiorno_t()) + "/" + String.valueOf(evento.getMese_t()) 
+		lblDataTermine = new JLabel(String.valueOf(evento.getGiorno_t()) + "/" + String.valueOf(evento.getMese_t()) 
 		+ "/" + String.valueOf(evento.getAnno_t()));
 		lblDataTermine.setBounds(300, 220, 123, 16);
 		pannello.add(lblDataTermine);
 		
-		JLabel lblLuogo_1 = new JLabel(evento.getLuogo());
+		lblLuogo_1 = new JLabel(evento.getLuogo());
 		lblLuogo_1.setBounds(300, 271, 123, 16);
 		pannello.add(lblLuogo_1);
 		
-		JLabel lblDataInizio = new JLabel(String.valueOf(evento.getGiorno_i()) + "/" + String.valueOf(evento.getMese_i())
+		lblDataInizio = new JLabel(String.valueOf(evento.getGiorno_i()) + "/" + String.valueOf(evento.getMese_i())
 		+ "/" +String.valueOf(evento.getAnno_i()));
 		lblDataInizio.setBounds(300, 320, 123, 16);
 		pannello.add(lblDataInizio);
 		
-		JLabel lblOraraioInizio = new JLabel(String.valueOf(evento.getOra()));
+		lblOraraioInizio = new JLabel(String.valueOf(evento.getOra()));
 		lblOraraioInizio.setBounds(300, 374, 123, 16);
 		pannello.add(lblOraraioInizio);
 		
-		JLabel lblDurata_1 = new JLabel(String.valueOf(evento.getDurata()));
+		lblDurata_1 = new JLabel(String.valueOf(evento.getDurata()));
 		lblDurata_1.setBounds(300, 439, 123, 16);
 		pannello.add(lblDurata_1);
 		
-		JLabel lblQuota_1 = new JLabel(String.valueOf(evento.getQuota())+"€");
+		lblQuota_1 = new JLabel(String.valueOf(evento.getQuota())+"€");
 		lblQuota_1.setBounds(300, 497, 123, 16);
 		pannello.add(lblQuota_1);
 		
-		JLabel lblExtra = new JLabel(evento.getExtra());
+		lblExtra = new JLabel(evento.getExtra());
 		lblExtra.setBounds(300, 547, 123, 16);
 		pannello.add(lblExtra);
 		
-		JLabel lblDataFine = new JLabel(String.valueOf(evento.getGiorno_f()) + "/" + String.valueOf(evento.getMese_f())
+		lblDataFine = new JLabel(String.valueOf(evento.getGiorno_f()) + "/" + String.valueOf(evento.getMese_f())
 		+ "/" +String.valueOf(evento.getAnno_f()));
 		lblDataFine.setBounds(300, 595, 123, 16);
 		pannello.add(lblDataFine);
 		
-		JLabel lblOrarioFine = new JLabel(String.valueOf(evento.getOra_conclusione()));
+		lblOrarioFine = new JLabel(String.valueOf(evento.getOra_conclusione()));
 		lblOrarioFine.setBounds(300, 637, 123, 16);
 		pannello.add(lblOrarioFine);
 		
-		JLabel lblNote_1 = new JLabel(evento.getNote());
+		lblNote_1 = new JLabel(evento.getNote());
 		lblNote_1.setBounds(300, 676, 123, 16);
 		pannello.add(lblNote_1);
 		
@@ -203,7 +322,7 @@ public class BachecaEventi {
 		return pannello;
 	}
 	
-	//tentativo brutale di cui parlavo
+/*	//tentativo brutale di cui parlavo
 protected void aggiungiParametri(JPanel pannello) {
 		
 		//Nome categoria
@@ -231,6 +350,8 @@ protected void aggiungiParametri(JPanel pannello) {
 		frame.getContentPane().setLayout(null);
 		//rende visibile la finestra
 		frame.setVisible(true);
-	}
+	}*/
+	
+	
 	
 }

@@ -94,7 +94,7 @@ public class EventGraphic {
 		frame.getContentPane().add(lblNumeroPartecipanti);
 		
 		txtIn = new JTextField();
-		txtIn.setText("INSERISCI NUM. PARTECIPANTI");
+		txtIn.setText("10");
 		txtIn.setBounds(277, 170, 195, 22);
 		frame.getContentPane().add(txtIn);
 		txtIn.setColumns(10);
@@ -104,19 +104,19 @@ public class EventGraphic {
 		frame.getContentPane().add(lblDataTermineIscrizione);
 		
 		txtGiorno = new JTextField();
-		txtGiorno.setText("GIORNO");
+		txtGiorno.setText("1");
 		txtGiorno.setBounds(277, 217, 59, 22);
 		frame.getContentPane().add(txtGiorno);
 		txtGiorno.setColumns(10);
 		
 		txtMese = new JTextField();
-		txtMese.setText("MESE");
+		txtMese.setText("2");
 		txtMese.setBounds(361, 217, 59, 22);
 		frame.getContentPane().add(txtMese);
 		txtMese.setColumns(10);
 		
 		txtAnno = new JTextField();
-		txtAnno.setText("ANNO");
+		txtAnno.setText("3");
 		txtAnno.setBounds(445, 217, 59, 22);
 		frame.getContentPane().add(txtAnno);
 		txtAnno.setColumns(10);
@@ -136,19 +136,19 @@ public class EventGraphic {
 		frame.getContentPane().add(lblDataInizioEvento);
 		
 		txtGiorno_1 = new JTextField();
-		txtGiorno_1.setText("GIORNO");
+		txtGiorno_1.setText("3");
 		txtGiorno_1.setBounds(277, 317, 59, 22);
 		frame.getContentPane().add(txtGiorno_1);
 		txtGiorno_1.setColumns(10);
 		
 		textField = new JTextField();
-		textField.setText("MESE");
+		textField.setText("4");
 		textField.setColumns(10);
 		textField.setBounds(361, 317, 59, 22);
 		frame.getContentPane().add(textField);
 		
 		textField_1 = new JTextField();
-		textField_1.setText("ANNO");
+		textField_1.setText("5");
 		textField_1.setColumns(10);
 		textField_1.setBounds(445, 317, 59, 22);
 		frame.getContentPane().add(textField_1);
@@ -158,13 +158,13 @@ public class EventGraphic {
 		frame.getContentPane().add(lblOrarioInizioEvento);
 		
 		txtOra = new JTextField();
-		txtOra.setText("ORA");
+		txtOra.setText("2");
 		txtOra.setColumns(10);
 		txtOra.setBounds(277, 371, 59, 22);
 		frame.getContentPane().add(txtOra);
 		
 		txtMinuti = new JTextField();
-		txtMinuti.setText("MINUTI");
+		txtMinuti.setText("1");
 		txtMinuti.setColumns(10);
 		txtMinuti.setBounds(361, 371, 59, 22);
 		frame.getContentPane().add(txtMinuti);
@@ -174,7 +174,7 @@ public class EventGraphic {
 		frame.getContentPane().add(lblDurata);
 		
 		textField_2 = new JTextField();
-		textField_2.setText("ORA");
+		textField_2.setText("2");
 		textField_2.setColumns(10);
 		textField_2.setBounds(277, 436, 59, 22);
 		frame.getContentPane().add(textField_2);
@@ -184,7 +184,7 @@ public class EventGraphic {
 		frame.getContentPane().add(lblQuota);
 		
 		txtDenaro = new JTextField();
-		txtDenaro.setText("DENARO");
+		txtDenaro.setText("30");
 		txtDenaro.setColumns(10);
 		txtDenaro.setBounds(277, 494, 59, 22);
 		frame.getContentPane().add(txtDenaro);
@@ -194,7 +194,7 @@ public class EventGraphic {
 		frame.getContentPane().add(lblInclusiNellaQuota);
 		
 		txtInserisciRobaInclusa = new JTextField();
-		txtInserisciRobaInclusa.setText("INSERISCI ROBA INCLUSA NELLA QUOTA");
+		txtInserisciRobaInclusa.setText("INSERISCI INCLUSI NELLA QUOTA");
 		txtInserisciRobaInclusa.setColumns(10);
 		txtInserisciRobaInclusa.setBounds(277, 544, 302, 22);
 		frame.getContentPane().add(txtInserisciRobaInclusa);
@@ -204,19 +204,19 @@ public class EventGraphic {
 		frame.getContentPane().add(lblDataFineEvento);
 		
 		textField_3 = new JTextField();
-		textField_3.setText("GIORNO");
+		textField_3.setText("4");
 		textField_3.setColumns(10);
 		textField_3.setBounds(277, 592, 59, 22);
 		frame.getContentPane().add(textField_3);
 		
 		textField_4 = new JTextField();
-		textField_4.setText("MESE");
+		textField_4.setText("5");
 		textField_4.setColumns(10);
 		textField_4.setBounds(361, 592, 59, 22);
 		frame.getContentPane().add(textField_4);
 		
 		textField_5 = new JTextField();
-		textField_5.setText("ANNO");
+		textField_5.setText("6");
 		textField_5.setColumns(10);
 		textField_5.setBounds(445, 592, 59, 22);
 		frame.getContentPane().add(textField_5);
@@ -226,13 +226,13 @@ public class EventGraphic {
 		frame.getContentPane().add(lblOrarioFineEvento);
 		
 		textField_6 = new JTextField();
-		textField_6.setText("ORA");
+		textField_6.setText("2");
 		textField_6.setColumns(10);
 		textField_6.setBounds(277, 634, 59, 22);
 		frame.getContentPane().add(textField_6);
 		
 		textField_7 = new JTextField();
-		textField_7.setText("MINUTI");
+		textField_7.setText("3");
 		textField_7.setColumns(10);
 		textField_7.setBounds(361, 634, 59, 22);
 		frame.getContentPane().add(textField_7);
@@ -255,14 +255,14 @@ public class EventGraphic {
 		lblNomeCategoria.setBounds(432, 33, 116, 16);
 		frame.getContentPane().add(lblNomeCategoria);*/
 		
+		//BOTTONE COLLEGATO AL METODO CHE CREA EVENTO DI TIPO GENERICO
 		btnNewButton = new JButton("Crea");
 		btnNewButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				creaEvent();
-				
-				
-			}
+		@Override
+		public void mouseClicked(MouseEvent e)
+		{
+			creaEvent();
+		}
 		});
 		btnNewButton.setBounds(780, 569, 137, 47);
 		frame.getContentPane().add(btnNewButton);

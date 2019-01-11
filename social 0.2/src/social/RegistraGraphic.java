@@ -1,5 +1,4 @@
 package social;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -7,11 +6,9 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.IOException;
-import java.util.GregorianCalendar;
-
 import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
 
 /*
  * Interfaccia grafica per registrazione e login utente
@@ -22,21 +19,29 @@ public class RegistraGraphic {
 	private JFrame frame;
 	private JTextField txtNomeReg;
 	private JTextField textAnno;
-	private JTextField textNoteReg;
+	private JTextArea textNoteReg;
 	private JTextField textFieldLoginNome;
-	private JTextField textNote;
-	private PaginaPersonaleGraphic paginaPersonale ;
+	private JTextArea textNote;
+	private PaginaPersonaleGraphic paginaPersonale;
 	private JTextField textMese;
 	private JTextField textGiorno;
 	private JButton btnMaschio;
 	private JButton btnFemmina;
 	private String genere;
+	
 	private JPasswordField passwordFieldReg;
-	private GregorianCalendar calendar = new GregorianCalendar();
-	
+	private JPasswordField passwordFieldLog;  
+	private JLabel labelNomeLog; 
+	private JLabel labelPswLog;
+	private JLabel lblNome;
+	private JLabel lblSesso;
+	private JLabel lblPsw;
+	private JLabel lblDataDiNascita;
+	private JButton btnRegistrati; 
+	private JButton btnLogin; 
+	private ControlloInserimento control = new ControlloInserimento();
 
-	private JPasswordField passwordFieldLog;
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -77,19 +82,19 @@ public class RegistraGraphic {
 		frame.getContentPane().setLayout(null);
 		
 		//Registrazione-Nome, Password, Sesso, Data di nascita, Note
-		JLabel lblNome = new JLabel("Nome Utente:");
+		lblNome = new JLabel("Nome Utente:");
 		lblNome.setBounds(87, 133, 134, 20);
 		frame.getContentPane().add(lblNome);
 		
-		JLabel lblSesso = new JLabel("Sesso");
+		lblSesso = new JLabel("Sesso");
 		lblSesso.setBounds(87, 254, 69, 20);
 		frame.getContentPane().add(lblSesso);
 		
-		JLabel lblPsw = new JLabel("Password:");
+		lblPsw = new JLabel("Password:");
 		lblPsw.setBounds(87, 171, 111, 20);
 		frame.getContentPane().add(lblPsw);
 		
-		JLabel lblDataDiNascita = new JLabel("Data di Nascita");
+		lblDataDiNascita = new JLabel("Data di Nascita");
 		lblDataDiNascita.setBounds(87, 290, 122, 20);
 		frame.getContentPane().add(lblDataDiNascita);
 		
@@ -108,97 +113,100 @@ public class RegistraGraphic {
 		txtNomeReg = new JTextField();
 		txtNomeReg.setBounds(219, 130, 146, 26);
 		frame.getContentPane().add(txtNomeReg);
-		txtNomeReg.setColumns(10);
 		
 		textAnno = new JTextField();
 		textAnno.setText("aaaa");
 		textAnno.setBounds(362, 290, 54, 26);
 		frame.getContentPane().add(textAnno);
-		textAnno.setColumns(10);
 		
+		textNoteReg = new JTextArea();
+		textNoteReg.setBounds(514, 186, 209, 88);
+		textNoteReg.setColumns(10);
+		frame.getContentPane().add(textNoteReg);
+		textNoteReg.setEditable(false);
+		textNoteReg.setWrapStyleWord(true);
 		
-		JButton btnRegistrati = new JButton("Registrati");
+			
+		
+		//BOTTONE PER EFFETUARE LA REGISTRAZIONE DELL'UTENTE (+relativi controlli sui dati inseriti)
+		btnRegistrati = new JButton("Registrati");
 		btnRegistrati.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				//bisogna aggiungere i controlli per verificare che tutti i dati siano 
-				//compatibili (es. nome è string, data è int etc.)
-				if(txtNomeReg.getText().length() != 0 && passwordFieldReg.getPassword().length!= 0 && 
-				   textAnno.getText().length() != 0 && textMese.getText().length() != 0
-				   && textGiorno.getText().length() != 0)
-					{
-						//fai controllo su giorni mesi e anni
-						if(isNumeric(textAnno.getText())&&isNumeric(textMese.getText())&&
-							isNumeric(textGiorno.getText()) && data(textGiorno.getText(),textMese.getText(),textAnno.getText()) 
-							&& checkUtente(txtNomeReg.getText()))
-						{
-							Utente nuovoUtente = new Utente();
+		@Override
+		public void mouseClicked(MouseEvent arg0)
+		{
+			
+			if(txtNomeReg.getText().length()!=0 && passwordFieldReg.getPassword().length!=0 && 
+			   textAnno.getText().length()!=0 && textMese.getText().length()!=0 && textGiorno.getText().length()!= 0)
+			{
+			
+				if(control.isNumeric(textAnno.getText())&& control.isNumeric(textMese.getText())
+				   && control.isNumeric(textGiorno.getText())&& control.data(textGiorno.getText(),
+				   textMese.getText(),textAnno.getText()))
+				{
+					if(control.checkUtente(txtNomeReg.getText()))
+					{		
+						Utente nuovoUtente = new Utente();
 				
-							char pwd [] = passwordFieldReg.getPassword(); //non so se sia meglio farlo tramite un metodo
-							String psw="";
-							//necesseria parte sotto perchè getPassword ritorna char[]	
-							for(int i=0 ; i<pwd.length ; i++)
-								{
-								psw = psw + Character.toString(pwd[i]);
-								} 
-							
-							nuovoUtente.creaUtente(txtNomeReg.getText(),psw,textAnno.getText(), textMese.getText(), textGiorno.getText(),genere );
-							MainClass.getDati().getListaUtenti().add(nuovoUtente);
-						}
-						else
-							textNoteReg.setText("Inserisci una data numerica");
-				
-						
-							try {
-								Serializator.saveData(MainClass.getDati());
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
+						char pwd [] = passwordFieldReg.getPassword(); 
+						nuovoUtente.creaUtente(txtNomeReg.getText(),gestionePsw(pwd),textAnno.getText(), textMese.getText(),
+						textGiorno.getText(),genere );
+						MainClass.getDati().getListaUtenti().add(nuovoUtente);
+						textNoteReg.setText("Registrazione completata con successo");
+					}
+					else  textNoteReg.setText("Nome utente già presente, usarne uno diverso");  //nel caso mettere /n
 				}
+				else textNoteReg.setText("Inserisci una data valida");
+				
+				try {
+					Serializator.saveData(MainClass.getDati());
+					} 
+				catch (IOException e)
+				    {
+					e.printStackTrace();
+					}
+			  } else textNoteReg.setText("Compilare tutti i campi");
 			}
 		});
+		
+		
 		btnRegistrati.setBounds(514, 129, 115, 29);
 		frame.getContentPane().add(btnRegistrati);
 		
-		textNoteReg = new JTextField();
-		textNoteReg.setBounds(514, 186, 209, 88);
-		frame.getContentPane().add(textNoteReg);
-		textNoteReg.setColumns(10);
 		
-		JButton btnLogin = new JButton("Login");
+		//LOGIN UTENTE
+		btnLogin = new JButton("Login");
 		btnLogin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
 				for(int i=0 ; i<MainClass.getDati().getListaUtenti().size() ; i++)
 				{
-						char pwd [] = passwordFieldLog.getPassword();
-						String psw="";
-					for(int x=0 ; x<pwd.length ; x++)
-					{
-						psw = psw + Character.toString(pwd[x]);
-					} 
+					char pwd [] = passwordFieldLog.getPassword();
+					
 					if((MainClass.getDati().getListaUtenti().get(i).getUsername().equals(textFieldLoginNome.getText())) && 
-						(MainClass.getDati().getListaUtenti().get(i).getPassword().equals(psw)))
+						(MainClass.getDati().getListaUtenti().get(i).getPassword().equals(gestionePsw(pwd))))
 					{
 						
 						paginaPersonale = new PaginaPersonaleGraphic();
 						paginaPersonale.inizializzaDati(MainClass.getDati().getListaUtenti().get(i));
-				
+						MainClass.setUtenteConnesso(MainClass.getDati().getListaUtenti().get(i));
+						//System.out.println(MainClass.getUtenteConnesso().getUsername());  //controlla identità
+						
 						frame.setVisible(false);
 				
 					}
+					else textNote.setText("Utente inesistente o dati errati");
 				}
 			}
 		});
 		btnLogin.setBounds(514, 414, 115, 29);
 		frame.getContentPane().add(btnLogin);
 		
-		JLabel labelNomeLog = new JLabel("Nome Utente:");
+		labelNomeLog = new JLabel("Nome Utente:");
 		labelNomeLog.setBounds(87, 418, 134, 20);
 		frame.getContentPane().add(labelNomeLog);
 		
-		JLabel labelPswLog = new JLabel("Password:");
+		labelPswLog = new JLabel("Password:");
 		labelPswLog.setBounds(87, 454, 111, 20);
 		frame.getContentPane().add(labelPswLog);
 		
@@ -206,11 +214,6 @@ public class RegistraGraphic {
 		textFieldLoginNome.setColumns(10);
 		textFieldLoginNome.setBounds(219, 415, 146, 26);
 		frame.getContentPane().add(textFieldLoginNome);
-		
-		textNote = new JTextField();
-		textNote.setColumns(10);
-		textNote.setBounds(514, 472, 209, 88);
-		frame.getContentPane().add(textNote);
 		
 		//bottoni per settera il genere dell'utente
 		btnMaschio = new JButton("Maschio");
@@ -233,8 +236,15 @@ public class RegistraGraphic {
 		btnFemmina.setBounds(319, 252, 97, 25);
 		frame.getContentPane().add(btnFemmina);
 		
-		//per oscuare psw durante la digitazione
+		//come per textNoteReg rende area non scrivibile e se testo troppo lungo va a capo in automatico
+		textNote = new JTextArea();
+		textNote.setColumns(10);
+		textNote.setBounds(514, 472, 209, 88);
+		frame.getContentPane().add(textNote);
+		textNote.setEditable(false);
+		textNote.setWrapStyleWord(true);
 		
+		//per oscuare psw durante la digitazione
 		passwordFieldReg = new JPasswordField();
 		passwordFieldReg.setBounds(219, 168, 146, 26);
 		frame.getContentPane().add(passwordFieldReg);
@@ -244,7 +254,6 @@ public class RegistraGraphic {
 		frame.getContentPane().add(passwordFieldLog);
 		//rende visibile finestra
 		frame.setVisible(true);
-		//finisce qua
 		
 		
 	}
@@ -267,63 +276,16 @@ public class RegistraGraphic {
 			
 	}*/
 	
-	public static boolean isNumeric(String str)  
-	{  
-		  try  
-		  {  
-		    double d = Double.parseDouble(str);  
-		  }  
-		  catch(NumberFormatException nfe)  
-		  {  
-		    return false;  
-		  }  
-		  return true;  
-		}
-	
-	public boolean data(String day,String month,String year) 
+	//METODO PER GESTIRE PSW MEDIANTE CARATTERE OSCURATO
+	private String gestionePsw(char [] convertPsw)
 	{
-		boolean ok = false;
-		int giorno=Integer.parseInt(day);  //dati relativi alla data di nascita dell'utente
-		int mese=Integer.parseInt(month);
-		int anno=Integer.parseInt(year);
-		int [] numeroGiorniPerMese = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+		String psw="";
 		
-		if(anno< calendar.get(calendar.YEAR)&& mese<=12 && giorno<=numeroGiorniPerMese[mese-1]) 
-		{ 
-			ok= true;
-		}
-		
-		if(anno==calendar.get(calendar.YEAR) && mese <(calendar.get(calendar.MONTH)+1)
-		   && giorno<=numeroGiorniPerMese[mese-1])
+		for(int i=0 ; i<convertPsw.length ; i++)
 		{
-			ok=true;
+			psw = psw + Character.toString(convertPsw[i]);
 		}
-		if(anno==calendar.get(calendar.YEAR) && mese==(calendar.get(calendar.MONTH)+1)&& 
-		   giorno<=calendar.get(calendar.DAY_OF_MONTH))
-		{
-			ok=true;
-		}
-		
-		return ok;
-		
+		return psw; 
 	}
 	
-	public boolean checkUtente(String _nome)  //se già presente utente con quel nome impedisce registrazione
-	{                                                         
-		boolean check=true;
-		
-		for(int i=0; i<=(MainClass.getDati().getListaUtenti().size()-1) ; i++)
-		{
-			
-			
-			if(_nome.equals(MainClass.getDati().getListaUtenti().get(i).getUsername()))
-			{
-				check=false;
-				
-			}
-		}
-		
-		
-		return check;
-	}
 }

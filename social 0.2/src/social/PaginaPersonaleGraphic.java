@@ -1,5 +1,6 @@
 package social;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.time.Year;
 import java.time.YearMonth;
@@ -8,6 +9,9 @@ import java.util.GregorianCalendar;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 
@@ -20,6 +24,7 @@ public class PaginaPersonaleGraphic {
 	private JLabel lblNome ;
 	private JLabel lblEta_1;
 	private JLabel lblSesso_1;
+	private JButton btnLogout; 
 	GregorianCalendar calendar = new GregorianCalendar();
 	
 	/**
@@ -78,7 +83,65 @@ public class PaginaPersonaleGraphic {
 		lblSesso_1 = new JLabel("sesso");
 		lblSesso_1.setBounds(307, 249, 56, 16);
 		frame.getContentPane().add(lblSesso_1);
+		
+		//bottone per passare da pagina personale a pagina categorie
+		JButton categoriebtn = new JButton("Gestione Categorie");
+		categoriebtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				BachecaEventi bac = new BachecaEventi();
+				frame.setVisible(false);
+			}
+		});
+		categoriebtn.setBounds(612, 91, 179, 50);
+		frame.getContentPane().add(categoriebtn);
+		
+		//bottone per gestione eventi (creati e a cui iscritto)
+		JButton eventibtn = new JButton("Gestione Eventi");
+		eventibtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				//scegliere se far solo vedere eventi a cui è iscritto o se anche poter creare nuovo evento
+			//	EventCalcioGraphic event = new EventCalcioGraphic();
+				
+				PaginaEventoGraphic ev= new PaginaEventoGraphic();
+				frame.setVisible(false);
+			}
+		});
+		eventibtn.setBounds(612, 157, 179, 50);
+		frame.getContentPane().add(eventibtn);
+		
+		//bottone per accedere alla propria area notifiche
+		JButton notifichebtn = new JButton("Area Notifiche");
+		notifichebtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				frame.setVisible(false);
+			}
+		});
+		notifichebtn.setBounds(612, 216, 179, 50);
+		frame.getContentPane().add(notifichebtn);
+		
+		btnLogout = new JButton("Logout");
+		btnLogout.setBounds(669, 543, 115, 29);
+		btnLogout.setBackground(Color.RED);
+		frame.getContentPane().add(btnLogout);
+		
+		//RIPORTA A PAG LOGIN E REG
+		btnLogout.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+			
+			//	MainClass.setUtenteConnesso(null);
+				RegistraGraphic rx = new RegistraGraphic();	
+				frame.setVisible(false);
+			}
+		});
+		
 		frame.setVisible(true);
+		
 		
 	}
 	

@@ -1,6 +1,7 @@
 package social;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /*
  * Categoria, superclasse di ogni diverso tipo di evento creato nel programma.
@@ -8,6 +9,8 @@ import java.io.Serializable;
  */
 public class Categoria implements Serializable
 {
+	private ArrayList <Utente> copiaEventi =new ArrayList<>();           //array utili a rimozione iscrizioni
+ 	protected ArrayList <Utente> utentiIscritti = new ArrayList<>();
 	protected String titolo ;
 	protected int numero_partecipanti ;
 	protected int anno_t, mese_t, giorno_t;
@@ -20,10 +23,15 @@ public class Categoria implements Serializable
 	protected int anno_f, mese_f, giorno_f;
 	protected int ora_conclusione, minuti_conclusione;
 	protected String note;
+	protected DatiUtili dati= MainClass.getDati();
+
+	
 
 	protected final String CONST="Nome categoria: %s \nTitolo: %s \nNumero partecipanti: %d \nTermine iscrizione: %d-%d-%d \nLuogo: %s\n"
 			+ "Data inizio: %d-%d-%d\nOra inizio: %d:%d\nDurata: %d\nQuota:%f\nCompreso nella quota: %s\nData fine evento: %d-%d-%d\n"
 			+ "Ora conclusione evento: %d:%d\nNote: %s";
+	
+	
 	public Categoria(String tit, int num_par, int anno, int mese, int giorno, String _luogo, int annoi, int mesei, int giornoi, int ore, int min,
 			int _durata, float _quota, String _extra, int annof, int mesef, int giornof, int orafin, int minfin, String _note)
 	{
@@ -48,6 +56,7 @@ public class Categoria implements Serializable
 		minuti_conclusione=minfin;
 		note=_note;
 		
+		
 	}
 	
 	// costruttore
@@ -57,11 +66,48 @@ public class Categoria implements Serializable
 	}
 	
 	//metodo toString
-	public String toString() 
+/*	public String toString() 
 	{
 		return String.format(CONST,titolo,numero_partecipanti,anno_t,mese_t,giorno_t,luogo,anno_i, mese_i, 
 				giorno_i,ora, minuti,durata,quota,extra,anno_f,mese_f,giorno_f,ora_conclusione, minuti_conclusione,note );
 	}
+	*/
+	//METODO PER REVOCA ISCRIZIONE DALLA LISTA ISCRITTI ALL'EVENTO
+	public void revocaIscrizione(int k)
+	{
+		
+		for (int x=0 ; x<dati.getListaEventi().get(k).getUtentiIscritti().size(); x++)
+		{
+		    if(!MainClass.getUtenteConnesso().getUsername().equals(dati.getListaEventi().get(k).getUtentiIscritti().get(x).getUsername()))
+		    {
+		    	copiaEventi.add(dati.getListaEventi().get(k).getUtentiIscritti().get(x));
+			    	//dati.getListaEventi().get(k).getUtentiIscritti().remove(x);
+			}	
+		    System.out.println(dati.getListaEventi().get(k).getUtentiIscritti().get(x).getUsername());
+			
+			//salvare cambiamenti   
+		} 
+		
+			dati.getListaEventi().get(k).getUtentiIscritti().clear();
+			System.out.println("seconda stampa ver");
+			
+			for (int x=0 ; x<copiaEventi.size(); x++)
+			{
+				System.out.println(copiaEventi.get(x).getUsername());
+				dati.getListaEventi().get(k).getUtentiIscritti().add(copiaEventi.get(x));
+			}
+			
+			System.out.println("terza verifica");
+			
+			for (int x=0 ; x<dati.getListaEventi().get(k).getUtentiIscritti().size(); x++)
+			{
+				System.out.println(dati.getListaEventi().get(k).getUtentiIscritti().get(x).getUsername());
+			}	
+			
+			copiaEventi.clear();
+	}
+	
+	
 
 	//getter e setter
 
@@ -239,6 +285,13 @@ public class Categoria implements Serializable
 	}
 	
 	
+	public ArrayList<Utente> getUtentiIscritti() {
+		return utentiIscritti;
+	}
+
+	public void setUtentiIscritti(ArrayList<Utente> utentiIscritti) {
+		this.utentiIscritti = utentiIscritti;
+	}
 	
 }
 

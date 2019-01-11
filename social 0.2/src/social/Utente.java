@@ -12,8 +12,9 @@ public class Utente implements Serializable
 	private String meseNascita;
 	private String giornoNascita;
 	private String sesso;
-	
+	private ArrayList <Categoria> copiaEventiPersonali =new ArrayList<>();  //per revoca iscrizione
 	private ArrayList <Categoria> eventiPersonali= new ArrayList();
+	protected DatiUtili dati=MainClass.getDati();
 	
 	public Utente()
 	{
@@ -30,9 +31,41 @@ public class Utente implements Serializable
 		inserisciSesso(sex);
 		inserisciMese(mese);
 		inserisciGiorno(giorno);
+	
+	}
+	
+
+	public void revocaIscrizione(Categoria eventoDaRimuovere)
+	{
+		for (int x=0 ; x<MainClass.getUtenteConnesso().getEventiPersonali().size(); x++)
+		{
+		    if(!MainClass.getUtenteConnesso().getEventiPersonali().get(x).equals(eventoDaRimuovere))
+		    {
+		    	copiaEventiPersonali.add(MainClass.getUtenteConnesso().getEventiPersonali().get(x));
+			    	//dati.getListaEventi().get(k).getUtentiIscritti().remove(x);
+			}	
+		    System.out.println(MainClass.getUtenteConnesso().getEventiPersonali().get(x));
+			
+			//salvare cambiamenti   
+		} 
 		
-		
-		
+			MainClass.getUtenteConnesso().getEventiPersonali().clear();
+			System.out.println("seconda stampa ver");
+			
+			for (int x=0 ; x<copiaEventiPersonali.size(); x++)
+			{
+				System.out.println(copiaEventiPersonali.get(x).getTitolo());
+				MainClass.getUtenteConnesso().getEventiPersonali().add(copiaEventiPersonali.get(x));
+			}
+			
+			System.out.println("terza verifica");
+			
+			for (int x=0 ; x<MainClass.getUtenteConnesso().getEventiPersonali().size(); x++)
+			{
+				System.out.println(MainClass.getUtenteConnesso().getEventiPersonali().get(x).getTitolo());
+			}	
+			
+			copiaEventiPersonali.clear();
 	}
 	
 	public String getMeseNascita() {
@@ -131,6 +164,15 @@ public class Utente implements Serializable
 
 	public void setEventiPersonali(ArrayList<Categoria> eventiPersonali) {
 		this.eventiPersonali = eventiPersonali;
+	}
+
+	public ArrayList<Categoria> getCopiaEventiPersonali() {
+		return copiaEventiPersonali;
+	}
+
+
+	public void setCopiaEventiPersonali(ArrayList<Categoria> copiaEventiPersonali) {
+		this.copiaEventiPersonali = copiaEventiPersonali;
 	}
 
 	

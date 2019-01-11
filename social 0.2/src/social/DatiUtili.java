@@ -10,7 +10,7 @@ public class DatiUtili implements Serializable
 {
 	
 	private ArrayList <Utente> listaUtenti= new ArrayList();
-	private ArrayList<Categoria> listaEventi= new ArrayList();
+	private ArrayList <Categoria> listaEventi= new ArrayList();
 	
 	
     //setter e getter
